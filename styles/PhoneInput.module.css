@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.input {
+  font-family: "Roboto", sans-serif;
+  font-size: 28px;
+  border: 0;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+}
+
+.input:active, .input:focus {
+  outline: 0;
+  outline-offset: 0;
+  border: 0;
+  border-bottom: 2px solid #ff8c00;
+}
+.notcorrect {
+  color: #d75a4a;
+}
+.correct {
+  color: #25ae88;
+}
