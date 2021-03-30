@@ -9,7 +9,6 @@ import {
   Steps,
   TStatus,
 } from "../context/paymentContext";
-import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [step, setStep] = useState<Steps>(Steps.operator);

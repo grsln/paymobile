@@ -1,10 +1,80 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { PaymentContext } from "../context/paymentContext";
 import AmountInput from "./AmountInput";
 import PhoneInput from "./PhoneInput";
 import Image from "next/image";
-import s from "../styles/PhoneAmountPage.module.css";
+import styled from "styled-components";
+import ButtonBack from "./ButtonBack";
 
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+`;
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  @media only screen and (max-device-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+const Main = styled.div`
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+  min-width: 250px;
+  height: 50%;
+  min-height: 350px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 1rem;
+`;
+const Operator = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 10px 20px;
+  align-self: center;
+`;
+const OperatorName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  margin: 1rem;
+`;
+const Button = styled.div`
+  background: linear-gradient(to bottom, #ff9810, #ff8300);
+  box-shadow: 0 10px 15px 0 rgb(255 140 0 / 20%);
+  color: #fff;
+  height: 58px;
+  min-width: 200px;
+  font-size: 19px;
+  border-radius: 29px;
+  width: 30%;
+  border: none;
+  margin: 0;
+  outline: none;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  &:active {
+    margin-top: 4px;
+    margin-bottom: -4px;
+  }
+  &:hover {
+    box-shadow: 0 10px 15px 0 rgb(255 140 0 / 60%);
+  }
+`;
 const PhoneAmountPage = () => {
   const paymentContext = useContext(PaymentContext);
   const handleClickButton = () => {
@@ -18,30 +88,25 @@ const PhoneAmountPage = () => {
   };
   const operator = paymentContext && paymentContext.operator;
   return (
-    <div className={s.root}>
-      <div className={s.wrap}>
-        <button
-          className={s.back}
-          onClick={() => paymentContext?.prevStep()}
-        ></button>
-        <div className={s.main}>
-          <div className={s.operator}>
+    <Root>
+      <Wrap>
+        <ButtonBack />
+        <Main>
+          <Operator>
             <Image
               src={operator.logoPath}
               alt="logo"
               width={100}
               height={100}
             />
-            <div className={s.operatorName}>{operator?.operator}</div>
-          </div>
+            <OperatorName>{operator?.operator}</OperatorName>
+          </Operator>
           <PhoneInput />
           <AmountInput />
-          <button className={s.button} onClick={handleClickButton}>
-            Продолжить
-          </button>
-        </div>
-      </div>
-    </div>
+          <Button onClick={handleClickButton}>Продолжить</Button>
+        </Main>
+      </Wrap>
+    </Root>
   );
 };
 

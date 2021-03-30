@@ -8,10 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.9",
     "next": "10.0.9",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-input-mask": "^2.0.4"
+    "react-input-mask": "^2.0.4",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",

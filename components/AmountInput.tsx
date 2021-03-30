@@ -1,9 +1,31 @@
 import { useContext, useState } from "react";
 import { PaymentContext } from "../context/paymentContext";
-import s from "../styles/AmountInput.module.css";
+import styled from "styled-components";
 
 const MAXAMOUNT = 1000;
 const MINAMOUNT = 1;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+const Input = styled.input`
+  font-family: "Roboto", sans-serif;
+  font-size: 28px;
+  border: 0;
+  border-bottom: 2px solid rgba(0,0,0,0.2);
+  &:active, &:focus {
+  outline: 0;
+  outline-offset: 0;
+  border: 0;
+  border-bottom: 2px solid #ff8c00;
+}
+`;
+const SmallText = styled.small<{correct:boolean}>`
+  color: ${props=>(props.correct===true?'#25ae88':'#d75a4a')};
+`;
 
 const AmountInput = () => {
   const paymentContext = useContext(PaymentContext);
@@ -21,18 +43,17 @@ const AmountInput = () => {
     }
   };
   return (
-    <div className={s.main}>
+    <Wrapper>
       <label htmlFor="amount">Сумма платежа (руб.):</label>
-      <input
-        className={s.input}
+      <Input
         id="amount"
         onChange={handleAmountChange}
         value={paymentContext?.getAmount()}
       />
-      <small className={isCorrectAmount ? s.correct : s.notcorrect}>
+      <SmallText correct={isCorrectAmount}>
         Сумма платежа от 1 до 1 000 рублей.
-      </small>
-    </div>
+      </SmallText>
+    </Wrapper>
   );
 };
 

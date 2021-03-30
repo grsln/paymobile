@@ -1,9 +1,119 @@
 import React, { useContext } from "react";
-import { PaymentContext } from "../context/paymentContext";
+import styled from "styled-components";
+import { PaymentContext, TStatus } from "../context/paymentContext";
 import apiservice from "../service/apiservice";
+import ButtonBack from "./ButtonBack";
 import StatusIcon from "./StatusIcon";
-import s from "../styles/ConfirmPage.module.css";
 
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  padding: 1rem;
+`;
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  @media only screen and (max-device-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  min-width: 350px;
+  height: 50%;
+  min-height: 250px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 1rem;
+  @media only screen and (max-device-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    min-width: 250px;
+    height: 50%;
+    min-height: 250px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.14);
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 1rem;
+  }
+`;
+const Operator = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px;
+  align-self: center;
+`;
+const OperatorName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  margin: 1rem;
+`;
+
+const Button = styled.button`
+  background: linear-gradient(to bottom, #ff9810, #ff8300);
+  box-shadow: 0 10px 15px 0 rgb(255 140 0 / 20%);
+  color: #fff;
+  height: 68px;
+  min-width: 220px;
+  font-size: 19px;
+  border-radius: 34px;
+  width: 30%;
+  border: none;
+  margin: 0;
+  outline: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  &:active {
+    margin-top: 4px;
+    margin-bottom: -4px;
+  }
+  &:hover {
+    box-shadow: 0 10px 15px 0 rgb(255 140 0 / 60%);
+  }
+`;
+const Title = styled.div`
+  font-size: 1.75rem;
+  text-align: center;
+`;
+const Text = styled.div`
+  font-size: 1.25rem;
+`;
+
+const ButtonWrap = styled.div<{ status: TStatus }>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: ${(props) =>
+    props.status === null ? "center" : "flex-start"};
+`;
+const ButtonText = styled.div`
+  padding-left: 1rem;
+`;
+const LineWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  line-height: 3rem;
+  padding-left: 3rem;
+`;
 const ConfirmPage = () => {
   const paymentContext = useContext(PaymentContext);
   const operator = paymentContext && paymentContext.operator;
@@ -33,35 +143,31 @@ const ConfirmPage = () => {
   };
 
   return (
-    <div className={s.root}>
-      <div className={s.wrap}>
-        <button
-          className={s.back}
-          onClick={() => paymentContext?.prevStep()}
-        ></button>
-        <div className={s.main}>
-          <div className={s.title}>Подтверждение платежа</div>
-          <div className={s.lineWrap}>
-            <div className={s.text}>Оператор: </div>
-            <div className={s.text}>{operator && operator.operator}</div>
-          </div>
-          <div className={s.lineWrap}>
-            <div className={s.text}>Номер телефона: </div>
-            <div className={s.text}>{paymentContext?.getFormattedPhone()}</div>
-          </div>
-          <button
-            className={s.button}
+    <Root>
+      <Wrap>
+        <ButtonBack />
+        <Main>
+          <Title>Подтверждение платежа</Title>
+          <LineWrap>
+            <Text>Оператор: </Text>
+            <Text>{operator && operator.operator}</Text>
+          </LineWrap>
+          <LineWrap>
+            <Text>Номер телефона: </Text>
+            <Text>{paymentContext?.getFormattedPhone()}</Text>
+          </LineWrap>
+          <Button
             onClick={status === "OK" ? handleSuccess : handleConfirm}
             disabled={status === "Process"}
           >
-            <div className={status ? s.btnWrapIcon : s.btnWrap}>
+            <ButtonWrap status={status}>
               <StatusIcon status={status} />
-              <div className={s.buttonText}>{messageButton()}</div>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
+              <ButtonText>{messageButton()}</ButtonText>
+            </ButtonWrap>
+          </Button>
+        </Main>
+      </Wrap>
+    </Root>
   );
 };
 
