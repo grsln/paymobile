@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { FormEvent, useContext } from "react";
 import styled from "styled-components";
 import { PaymentContext, TStatus } from "../context/paymentContext";
 import apiservice from "../service/apiservice";
@@ -23,7 +23,7 @@ const Wrap = styled.div`
     justify-content: center;
   }
 `;
-const Main = styled.div`
+const Main = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -141,12 +141,16 @@ const ConfirmPage = () => {
     }
     return `Оплатить ${paymentContext?.amount}руб.`;
   };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    status === "OK" ? handleSuccess() : handleConfirm();
+  };
 
   return (
     <Root>
       <Wrap>
         <ButtonBack />
-        <Main>
+        <Main onSubmit={handleSubmit}>
           <Title>Подтверждение платежа</Title>
           <LineWrap>
             <Text>Оператор: </Text>
@@ -156,15 +160,16 @@ const ConfirmPage = () => {
             <Text>Номер телефона: </Text>
             <Text>{paymentContext?.getFormattedPhone()}</Text>
           </LineWrap>
-          <Button
-            onClick={status === "OK" ? handleSuccess : handleConfirm}
-            disabled={status === "Process"}
-          >
-            <ButtonWrap status={status}>
-              <StatusIcon status={status} />
-              <ButtonText>{messageButton()}</ButtonText>
-            </ButtonWrap>
-          </Button>
+            <Button
+              disabled={status === "Process"}
+              type='submit'
+              autoFocus
+            >
+              <ButtonWrap status={status}>
+                <StatusIcon status={status} />
+                <ButtonText>{messageButton()}</ButtonText>
+              </ButtonWrap>
+            </Button>
         </Main>
       </Wrap>
     </Root>

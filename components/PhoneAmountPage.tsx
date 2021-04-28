@@ -23,12 +23,11 @@ const Wrap = styled.div`
     justify-content: center;
   }
 `;
-const Main = styled.div`
+const Main = styled.form`
   display: flex;
   flex-direction:column;
   align-items: center;
   justify-content: flex-start;
-  align-items: center;
   width: 50%;
   min-width: 250px;
   height: 50%;
@@ -52,7 +51,7 @@ const OperatorName = styled.div`
   font-size: 2rem;
   margin: 1rem;
 `;
-const Button = styled.div`
+const Button = styled.button`
   background: linear-gradient(to bottom, #ff9810, #ff8300);
   box-shadow: 0 10px 15px 0 rgb(255 140 0 / 20%);
   color: #fff;
@@ -77,7 +76,8 @@ const Button = styled.div`
 `;
 const PhoneAmountPage = () => {
   const paymentContext = useContext(PaymentContext);
-  const handleClickButton = () => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (
       paymentContext &&
       paymentContext.phoneNumber !== null &&
@@ -91,7 +91,7 @@ const PhoneAmountPage = () => {
     <Root>
       <Wrap>
         <ButtonBack />
-        <Main>
+        <Main onSubmit={handleSubmit}>
           <Operator>
             <Image
               src={operator.logoPath}
@@ -103,7 +103,7 @@ const PhoneAmountPage = () => {
           </Operator>
           <PhoneInput />
           <AmountInput />
-          <Button onClick={handleClickButton}>Продолжить</Button>
+          <Button type='submit'>Продолжить</Button>
         </Main>
       </Wrap>
     </Root>
